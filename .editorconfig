@@ -3,6 +3,8 @@ root = true
 # All files
 [*]
 indent_style = space
+vsspell_section_id = 7f0e11db635d476d93d249f5617cb8f6
+vsspell_ignored_words_7f0e11db635d476d93d249f5617cb8f6 = Formular|Formulars
 
 # Xml files
 [*.xml]
@@ -184,6 +186,7 @@ csharp_space_between_square_brackets = false
 # Wrapping preferences
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
+csharp_prefer_system_threading_lock = true:suggestion
 
 #### Naming styles ####
 [*.{cs,vb}]
@@ -375,4 +378,7 @@ dotnet_naming_style.s_camelcase.required_prefix = s_
 dotnet_naming_style.s_camelcase.required_suffix = 
 dotnet_naming_style.s_camelcase.word_separator = 
 dotnet_naming_style.s_camelcase.capitalization = camel_case
+tab_width = 4
+indent_size = 4
+end_of_line = crlf
 

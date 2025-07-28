@@ -29,6 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocFlow.Host", "src\DocFlow
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
@@ -177,5 +178,8 @@ Global
 		{189D3737-A8E8-4FE1-A997-6613F089363A} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{693D1B2E-7A41-40A4-9953-444EC41B8B81} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{5669C660-7FD3-4269-84FD-571F7A9A3226} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69FFCF43-41F3-4003-8857-AB413C039802}
 	EndGlobalSection
 EndGlobal

@@ -9,10 +9,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DocFlow.Api\DocFlow.Api.csproj" />
+    <ProjectReference Include="..\DocFlow.Infrastructure\DocFlow.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
