@@ -14,4 +14,6 @@ public class Presentable
     public required string Color { get; init; }
 
     public required int SequenceNumber { get; init; }
+
+    public required bool IsEnabled { get; init; }
 }

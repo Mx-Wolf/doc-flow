@@ -4,3 +4,19 @@ GET {{DocFlow.Host_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{DocFlow.Host_HostAddress}}/api/documents
+Content-Type: application/json
+Accept: application/json
+
+{
+    "formularId": 42,
+    "unitMapId": 2,
+    "properties":{
+        "title": "Test Document",
+        "description": "This is a test document",
+        "createdBy": "John Doe"
+    }
+}
+
+###

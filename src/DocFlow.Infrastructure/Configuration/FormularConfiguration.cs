@@ -15,6 +15,12 @@ public class FormularConfiguration:IEntityTypeConfiguration<Formular>
             .ValueGeneratedNever()
             .IsRequired();
 
+        builder.Property(f => f.DocumentData)
+            .HasConversion(
+                a => a.AssemblyQualifiedName,
+                s => Type.GetType(s!)!)
+            .HasMaxLength(800);
+
         builder.OwnsOne(f => f.Presentable);
     }
 }

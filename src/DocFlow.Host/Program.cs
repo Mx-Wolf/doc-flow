@@ -1,8 +1,11 @@
-using DocFlow.Api;
+using DocFlow.Application;
+using DocFlow.Infrastructure;
 using DocFlow.Infrastructure.Persistence;
 
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
+
+using AssemblyReference = DocFlow.Api.AssemblyReference;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +15,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers()
     .PartManager.ApplicationParts.Add( 
         new AssemblyPart(AssemblyReference.Api));
-builder.Services.AddDbContext<DocFlowDbContext>(o =>
-{
-    o.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

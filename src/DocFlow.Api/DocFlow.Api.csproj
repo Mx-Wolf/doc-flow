@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DocFlow.Application\DocFlow.Application.csproj" />
+  </ItemGroup>
+
 </Project>
