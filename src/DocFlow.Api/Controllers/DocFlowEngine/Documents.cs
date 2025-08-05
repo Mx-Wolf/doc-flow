@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace DocFlow.Api.Controllers.DocFlowEngine;
 
 [ApiController]
-[Route("api/[controller]")]
-public class DocumentsController
+[Route("api/documents")]
+public class Documents
 {
-    [HttpGet]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
         await Task.CompletedTask;
@@ -24,7 +24,7 @@ public class DocumentsController
         var result = await handler.HandleAsync(command, cancellationToken);
         return new CreatedAtActionResult(
             nameof(Get),
-            nameof(DocumentsController),
+            nameof(Documents),
             new { result.Id },
             result);
     }

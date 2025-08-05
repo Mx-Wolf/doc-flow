@@ -20,3 +20,23 @@ Accept: application/json
 }
 
 ###
+
+###
+POST {{DocFlow.Host_HostAddress}}/api/handling-maps/73
+Content-Type: application/json
+Accept: applicatoin/json
+
+{
+
+}
+
+###
+POST {{DocFlow.Host_HostAddress}}/api/activities/97
+Content-Type: application/json
+Accept: applicatoin/json
+
+{
+
+}
+
+###

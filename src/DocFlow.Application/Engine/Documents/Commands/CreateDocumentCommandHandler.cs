@@ -2,10 +2,12 @@
 
 public class CreateDocumentCommandHandler: ICommandHandler<CreateDocumentCommand, CreateDocumentResult>
 {
-    public Task<CreateDocumentResult> HandleAsync(
+    public async Task<CreateDocumentResult> HandleAsync(
         CreateDocumentCommand command, 
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var result = new CreateDocumentResult(12543);
+        return await Task.FromResult(result);
+
     }
 }
