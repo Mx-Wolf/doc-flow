@@ -35,3 +35,12 @@ Accept: applicatoin/json
 }
 
 ###
+
+POST {{DocFlow.Host_HostAddress}}/api/documents/73/events
+Content-Type: application/json
+Accept: application/json
+
+{
+    "type": "Actualizing",
+    "payload": "{        \"title\": \"Updated Document Title\",        \"description\": \"Updated description for the document\"    }"
+}

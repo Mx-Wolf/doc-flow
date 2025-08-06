@@ -3,9 +3,14 @@
 namespace DocFlow.Api.Controllers.DocFlowEngine;
 
 [ApiController]
-[Route("api/handling-maps")]
-public class HandlingMap
+[Route("api/unit-maps")]
+public class UnitMaps
 {
+    /// <summary>
+    /// Creates a new document that starts its lifecycle in the specified unit map. The unit is selected by convention.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost("{id:int}/documents")]
     public async Task<IActionResult> Post(int id)
     {

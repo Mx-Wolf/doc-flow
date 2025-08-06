@@ -11,4 +11,8 @@
     <PackageReference Include="Scrutor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DocFlow.Domain\DocFlow.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

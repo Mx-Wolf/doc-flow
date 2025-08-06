@@ -3,9 +3,14 @@
 namespace DocFlow.Api.Controllers.DocFlowEngine;
 
 [ApiController]
-[Route("api/activities")]
-public class Activities
+[Route("api/units")]
+public class Units
 {
+    /// <summary>
+    /// Creates a new document that starts its lifecycle in the specified unit.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost("{id:int}/documents")]
     public async Task<IActionResult> Post(int id)
     {

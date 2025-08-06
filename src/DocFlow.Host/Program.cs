@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using DocFlow.Api;
 using DocFlow.Application;
 using DocFlow.Infrastructure;
@@ -12,8 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers()
+    .AddJsonOptions(e =>
+    {
+        e.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    })
     .PartManager.ApplicationParts.Add( 
-        new AssemblyPart(AssemblyReference.Api));
+        new AssemblyPart(AssemblyReference.Api))
+    ;
 
 builder.Services.AddApplicationServices();
 builder.Services.AddApiServices();
