@@ -1,11 +1,6 @@
 @DocFlow.Host_HostAddress = http://localhost:5273
 
-GET {{DocFlow.Host_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-
-POST {{DocFlow.Host_HostAddress}}/api/documents
+POST {{DocFlow.Host_HostAddress}}/api/documents/37/events
 Content-Type: application/json
 Accept: application/json
 
@@ -22,7 +17,7 @@ Accept: application/json
 ###
 
 ###
-POST {{DocFlow.Host_HostAddress}}/api/handling-maps/73
+POST {{DocFlow.Host_HostAddress}}/api/handling-maps/73/documents
 Content-Type: application/json
 Accept: applicatoin/json
 
@@ -31,7 +26,7 @@ Accept: applicatoin/json
 }
 
 ###
-POST {{DocFlow.Host_HostAddress}}/api/activities/97
+POST {{DocFlow.Host_HostAddress}}/api/activities/97/documents
 Content-Type: application/json
 Accept: applicatoin/json
 

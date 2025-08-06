@@ -15,7 +15,8 @@ public class Documents
         await Task.CompletedTask;
         return new OkObjectResult(new { Message = "Hello from Documents!" });
     }
-    [HttpPost]
+
+    [HttpPost("{id}/events")]
     public async Task<IActionResult> Post(
         [FromServices] ICommandHandler<CreateDocumentCommand, CreateDocumentResult> handler,
         [FromBody] CreateDocumentCommand command,

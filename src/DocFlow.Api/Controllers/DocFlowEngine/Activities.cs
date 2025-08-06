@@ -6,7 +6,7 @@ namespace DocFlow.Api.Controllers.DocFlowEngine;
 [Route("api/activities")]
 public class Activities
 {
-    [HttpPost("{id:int}")]
+    [HttpPost("{id:int}/documents")]
     public async Task<IActionResult> Post(int id)
     {
         await Task.CompletedTask;
