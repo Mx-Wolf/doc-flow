@@ -1,5 +1,5 @@
 ﻿namespace DocFlow.Domain.Entities;
 
-public class TranslationRequest
+public class TranslationRequest: StateDetails
 {
 }

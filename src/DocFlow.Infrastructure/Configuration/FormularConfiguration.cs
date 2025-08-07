@@ -1,9 +1,10 @@
-﻿using DocFlow.Domain.Entities;
+﻿using DocFlow.Domain.Entities.StateMachine.Flow;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DocFlow.Infrastructure.Configuration;
+
 public class FormularConfiguration:IEntityTypeConfiguration<Formular>
 {
     public void Configure(EntityTypeBuilder<Formular> builder)

@@ -1,3 +1,3 @@
 ﻿namespace DocFlow.Domain.Entities;
 
-public class BugFixRequest{}
+public class BugFixRequest: StateDetails { }

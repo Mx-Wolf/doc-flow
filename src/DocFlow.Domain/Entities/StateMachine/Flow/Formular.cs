@@ -1,6 +1,6 @@
 ﻿using DocFlow.Domain.Values;
 
-namespace DocFlow.Domain.Entities;
+namespace DocFlow.Domain.Entities.StateMachine.Flow;
 public class Formular
 {
     private readonly Type? _documentData;

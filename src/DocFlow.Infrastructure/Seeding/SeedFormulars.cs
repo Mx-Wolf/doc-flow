@@ -1,4 +1,5 @@
 ﻿using DocFlow.Domain.Entities;
+using DocFlow.Domain.Entities.StateMachine.Flow;
 using DocFlow.Domain.Values;
 
 using Microsoft.EntityFrameworkCore;
