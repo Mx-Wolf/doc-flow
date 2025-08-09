@@ -3,8 +3,8 @@
 namespace DocFlow.Api.Controllers.DocFlowEngine;
 
 [ApiController]
-[Route("api/units")]
-public class Units
+[Route("api/stations")]
+public class Stations
 {
     /// <summary>
     /// Creates a new document that starts its lifecycle in the specified unit.
