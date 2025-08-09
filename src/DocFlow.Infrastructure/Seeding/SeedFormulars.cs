@@ -7,16 +7,16 @@ using Microsoft.EntityFrameworkCore;
 namespace DocFlow.Infrastructure.Seeding;
 internal static class SeedFormulars
 {
-    public static async Task SeedAsync(DbContext context, bool storeManaged, CancellationToken cancellationToken)
+    public static async Task SeedAsync(DbContext context, bool _, CancellationToken cancellationToken)
     {
         var formulars = context.Set<Formular>();
-        if (!formulars.Any())
+        if (!(await formulars.AnyAsync(cancellationToken)))
         {
-            formulars.AddRange(new List<Formular>
-            {
-                new()
+            await formulars.AddRangeAsync((List<Formular>)
+            [
+                new Formular
                 {
-                    Id = 1001,
+                    Id = new FormularId(1001),
                     DocumentData = typeof(IncidentReport),
                     Presentable = new Presentable
                     {
@@ -27,22 +27,24 @@ internal static class SeedFormulars
                         IsEnabled = true,
                     }
                 },
-                new()
+
+                new Formular
                 {
-                   Id = 1101,
-                   DocumentData = typeof(TranslationRequest),
-                   Presentable = new Presentable
-                   {
-                       Code = "Translation",
-                       Color = "Primary",
-                       Name = "Translation Request",
-                       SequenceNumber = 200,
-                       IsEnabled = true,
-                   }
+                    Id = new FormularId(1101),
+                    DocumentData = typeof(TranslationRequest),
+                    Presentable = new Presentable
+                    {
+                        Code = "Translation",
+                        Color = "Primary",
+                        Name = "Translation Request",
+                        SequenceNumber = 200,
+                        IsEnabled = true,
+                    }
                 },
-                new()
+
+                new Formular
                 {
-                    Id = 1102,
+                    Id = new FormularId(1102),
                     DocumentData = typeof(BugFixRequest),
                     Presentable = new Presentable
                     {
@@ -53,7 +55,7 @@ internal static class SeedFormulars
                         IsEnabled = true,
                     }
                 }
-            });
+            ], cancellationToken);
         }
 
         await Task.CompletedTask;

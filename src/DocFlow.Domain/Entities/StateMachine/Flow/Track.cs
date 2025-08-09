@@ -2,12 +2,10 @@
 
 namespace DocFlow.Domain.Entities.StateMachine.Flow;
 [StronglyTypedId]
-public partial struct FormularId { }
-public class Formular
+public partial struct TrackId { }
+public class Track
 {
-    public required FormularId Id { get; init; }
-
-    public required Type DocumentData { get; set; }
-
+    public required TrackId Id { get; init; }
+    public required FormularId FormularId { get; init; }
     public required Presentable Presentable { get; init; }
 }
