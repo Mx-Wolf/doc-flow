@@ -4,10 +4,11 @@ namespace DocFlow.Application.Engine.Events;
 
 public record DocumentEventsRequestCommand(int Id, DocumentEventType Type, string Payload);
 
-public class DocumentEventsService : ICommandHandler<DocumentEventsRequestCommand, DocumentKey>
+public class DocumentEventsService : CommandHandler<DocumentEventsRequestCommand, DocumentKey>
 {
-    public async Task<DocumentKey> HandleAsync(DocumentEventsRequestCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<DocumentKey, Exception>> HandleAsync(DocumentEventsRequestCommand command, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(new DocumentKey(command.Id));
+        await Task.CompletedTask;
+        return Success(new DocumentKey(command.Id));
     }
 }

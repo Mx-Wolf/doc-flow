@@ -1,6 +1,8 @@
-﻿namespace DocFlow.Application;
+﻿using DocFlow.Domain.Values;
+
+namespace DocFlow.Application;
 
 public interface ICommandHandler<in TCommand, TResult>
 {
-    Task<TResult> HandleAsync(TCommand command, CancellationToken cancellationToken);
+    Task<Result<TResult, Exception>> HandleAsync(TCommand command, CancellationToken cancellationToken);
 }
