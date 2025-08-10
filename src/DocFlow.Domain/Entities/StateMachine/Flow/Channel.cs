@@ -2,7 +2,7 @@
 
 namespace DocFlow.Domain.Entities.StateMachine.Flow;
 [StronglyTypedId]
-public partial struct ChannelId{}
+public readonly partial struct ChannelId{}
 public class Channel
 {
     public required ChannelId Id { get; init; }

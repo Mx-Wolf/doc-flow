@@ -3,7 +3,7 @@ using DocFlow.Domain.Values;
 
 namespace DocFlow.Domain.Entities.StateMachine.State;
 [StronglyTypedId]
-public partial struct DocumentId { }
+public readonly partial struct DocumentId { }
 public class Document
 {
     public required DocumentId Id { get; init; }

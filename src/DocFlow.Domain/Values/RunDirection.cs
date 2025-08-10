@@ -2,7 +2,7 @@
 
 public enum RunDirection
 {
-    None = 0,
+    InPlace = 0,
     Forward = 1,
-    Backward = 2,
+    Recall = 2,
 }

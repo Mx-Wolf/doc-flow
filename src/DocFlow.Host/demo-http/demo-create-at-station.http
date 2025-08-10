@@ -7,7 +7,9 @@ Content-Type: application/json
 Accept: application/json
 {
    "description": "Document created at station",
-   "priority": "high"
+   "priority": "high",
+   "traceRecordId":"{B7CB640D-4175-4EC3-A0C7-7186D89F7F67}",
+   "generatedAy":"2023-10-01T00:00:00Z"
 }
 
 ###

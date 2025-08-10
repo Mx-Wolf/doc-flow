@@ -10,6 +10,10 @@ public class StationCreateDocumentHandler:CommandHandler<StationCreateDocument, 
 {
     public override Task<Result<DocumentKey,Exception>> HandleAsync(StationCreateDocument command, CancellationToken cancellationToken)
     {
+        // find:
+        //   1. track and formular by StationId
+        //   2. map the Body to the formular data type
+        //   3. create a document with the track and formular
         throw new NotImplementedException();
     }
 }

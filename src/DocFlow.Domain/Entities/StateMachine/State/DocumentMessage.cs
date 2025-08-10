@@ -2,7 +2,7 @@
 
 namespace DocFlow.Domain.Entities.StateMachine.State;
 [StronglyTypedId]
-public partial struct DocumentMessageId { }
+public readonly partial struct DocumentMessageId { }
 public class DocumentMessage
 {
     public required DocumentMessageId Id { get; init; }
