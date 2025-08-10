@@ -1,0 +1,13 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@DocFlow.Host_HostAddress = http://localhost:5273
+@DocFlow.Host_StartupStationId = 12001
+
+POST {{DocFlow.Host_HostAddress}}/api/stations/{{DocFlow.Host_StartupStationId}}/documents
+Content-Type: application/json
+Accept: application/json
+{
+   "description": "Document created at station",
+   "priority": "high"
+}
+
+###

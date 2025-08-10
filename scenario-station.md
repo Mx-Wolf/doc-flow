@@ -26,7 +26,8 @@ The purpose of this demo is to illustrate how the system creates and registers a
    with the following JSON body:
    ```json
    {
-     "description": "Oil spill detected near the platform."    
+     "description": "Oil spill detected near the platform.",
+     "priority":"high"
    }
    ```
    - **description**: The incident to be documented (in this case, "Oil spill detected near the platform.").
