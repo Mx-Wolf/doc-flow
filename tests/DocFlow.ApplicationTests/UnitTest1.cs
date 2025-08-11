@@ -1,10 +1,47 @@
-﻿namespace DocFlow.ApplicationTests;
+﻿using System.Text.Json.Nodes;
 
+using DocFlow.Application.Engine.Stations.Commands;
+using DocFlow.Application.Persistence.Engine;
+using DocFlow.Domain.Entities.StateMachine.Flow;
+using DocFlow.Domain.Values;
+
+
+namespace DocFlow.ApplicationTests;
+    
 public class UnitTest1
 {
+    private readonly Fixture _fixture = new Fixture();
     [Fact]
-    public void Test1()
+    public async Task StationCreateDocumentHandler_HandleAsync_ReturnsDocumentKeyOnSuccess()
     {
+        // Arrange
+        var stationId = _fixture.Create<StationId>();
+        var commandBody = new JsonObject { ["field"] = "value" };
+        var command = new StationCreateDocument(stationId, commandBody);
 
+        var stationDto = _fixture.Create<StationDto>();
+        var documentKey = _fixture.Create<DocumentKey>();
+
+        var stationsRepositoryMock = new Mock<IStationsRepository>();
+        stationsRepositoryMock
+            .Setup(r => r.GetStationAsync(stationId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<StationDto,Exception>.Success(stationDto));
+
+        var documentEngineMock = new Mock<IDocumentEngine>();
+        documentEngineMock
+            .Setup(e => e.CreateDocumentAsync(stationDto, commandBody, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<DocumentKey,Exception>.Success(documentKey));
+
+        var handler = new StationCreateDocumentHandler(
+            stationsRepositoryMock.Object,
+            documentEngineMock.Object
+        );
+
+        // Act
+        var result = await handler.HandleAsync(command, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(result.Value, documentKey);
     }
 }
