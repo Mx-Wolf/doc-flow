@@ -2,9 +2,10 @@
 
 namespace DocFlow.Domain.Entities.StateMachine.State;
 [StronglyTypedId(Template.Guid)]
-public readonly partial struct TraceRecordId { }
-public abstract class TraceRecord(
-    TraceRecordId id,
+public readonly partial struct RunSessionId { }
+public abstract class RunSession
+    (
+    RunSessionId id,
     DateTime generatedAt,
     DocumentId ambientStateId,
     AtBy created,
@@ -13,7 +14,7 @@ public abstract class TraceRecord(
     /// <summary>
     /// client side generated
     /// </summary>
-    public required TraceRecordId Id { get; init; } = id;
+    public required RunSessionId Id { get; init; } = id;
 
     /// <summary>
     /// UTC time when the trace record was generated at the source or at the client side.
