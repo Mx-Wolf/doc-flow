@@ -2,7 +2,7 @@
 
 namespace DocFlow.Domain.Entities.StateMachine.State;
 
-public class InPlaceTraceRecord(
+public class InPlaceSession(
     RunSessionId id, 
     DateTime generatedAt, 
     DocumentId ambientStateId,

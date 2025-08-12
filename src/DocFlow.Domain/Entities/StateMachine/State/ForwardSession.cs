@@ -3,7 +3,7 @@ using DocFlow.Domain.Values;
 
 namespace DocFlow.Domain.Entities.StateMachine.State;
 
-public class ForwardTraceRecord(
+public class ForwardSession(
     RunSessionId id, 
     DateTime generatedAt, 
     DocumentId ambientStateId, 
