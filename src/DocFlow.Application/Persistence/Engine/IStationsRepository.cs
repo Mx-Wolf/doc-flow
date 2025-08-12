@@ -7,7 +7,7 @@ using DocFlow.Domain.Values;
 namespace DocFlow.Application.Persistence.Engine;
 
 public record StationDto(Formular Formular, Track Track, Station Station);
-public record DocuementDto(Formular Formular, Track Traak, Station Station, Document Document, );
+public record DocumentDto(Formular Formular, Track Traak, Station Station, Document Document, RunSession RunSession);
 public interface IStationsRepository
 {
     Task<Result<StationDto, Exception>> GetStationAsync(StationId stationId, CancellationToken cancellationToken);
@@ -15,8 +15,11 @@ public interface IStationsRepository
 
 public interface IDocumentEngine
 {
-    Task<Result<DocumentKey,Exception>> CreateDocumentAsync(
+    Task<Result<DocumentDto, Exception>> CreateDocumentAsync(
         StationDto startupStation,
         JsonObject body,
         CancellationToken cancellationToken);   
+    Task<Result<DocumentKey, Exception>> UpdateDocumentAsync(
+        DocumentDto document,
+        CancellationToken cancellationToken);
 }

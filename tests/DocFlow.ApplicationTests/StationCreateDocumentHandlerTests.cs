@@ -3,14 +3,20 @@
 using DocFlow.Application.Engine.Stations.Commands;
 using DocFlow.Application.Persistence.Engine;
 using DocFlow.Domain.Entities.StateMachine.Flow;
+using DocFlow.Domain.Entities.StateMachine.State;
 using DocFlow.Domain.Values;
 
 
 namespace DocFlow.ApplicationTests;
     
-public class UnitTest1
+public class StationCreateDocumentHandlerTests
 {
     private readonly Fixture _fixture = new Fixture();
+   
+    public StationCreateDocumentHandlerTests()
+    {
+        _fixture.Register<RunSession>(() => _fixture.Create<InPlaceSession>());
+    }
     [Fact]
     public async Task StationCreateDocumentHandler_HandleAsync_ReturnsDocumentKeyOnSuccess()
     {
@@ -21,6 +27,7 @@ public class UnitTest1
 
         var stationDto = _fixture.Create<StationDto>();
         var documentKey = _fixture.Create<DocumentKey>();
+        var documentDto = _fixture.Create<DocumentDto>();
 
         var stationsRepositoryMock = new Mock<IStationsRepository>();
         stationsRepositoryMock
@@ -30,6 +37,10 @@ public class UnitTest1
         var documentEngineMock = new Mock<IDocumentEngine>();
         documentEngineMock
             .Setup(e => e.CreateDocumentAsync(stationDto, commandBody, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<DocumentDto,Exception>.Success(documentDto));
+
+        documentEngineMock
+            .Setup(e => e.UpdateDocumentAsync(documentDto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<DocumentKey,Exception>.Success(documentKey));
 
         var handler = new StationCreateDocumentHandler(
