@@ -11,11 +11,11 @@ namespace DocFlow.ApplicationTests;
     
 public class StationCreateDocumentHandlerTests
 {
-    private readonly Fixture _fixture = new Fixture();
+    private readonly Fixture _fixture = new();
    
     public StationCreateDocumentHandlerTests()
     {
-        _fixture.Register<RunSession>(() => _fixture.Create<InPlaceSession>());
+        _fixture.Register<RunSession>(() => _fixture.Create<ComputeSession>());
     }
     [Fact]
     public async Task StationCreateDocumentHandler_HandleAsync_ReturnsDocumentKeyOnSuccess()
@@ -25,23 +25,24 @@ public class StationCreateDocumentHandlerTests
         var commandBody = new JsonObject { ["field"] = "value" };
         var command = new StationCreateDocument(stationId, commandBody);
 
-        var stationDto = _fixture.Create<StationDto>();
+        var station = _fixture.Create<Station>();
         var documentKey = _fixture.Create<DocumentKey>();
-        var documentDto = _fixture.Create<DocumentDto>();
+        var computeSession = _fixture.Create<ComputeSession>();
+        var document = _fixture.Create<Document>();
 
         var stationsRepositoryMock = new Mock<IStationsRepository>();
         stationsRepositoryMock
             .Setup(r => r.GetStationAsync(stationId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<StationDto,Exception>.Success(stationDto));
+            .ReturnsAsync(Result<Station,Exception>.Success(station));
 
         var documentEngineMock = new Mock<IDocumentEngine>();
         documentEngineMock
-            .Setup(e => e.CreateDocumentAsync(stationDto, commandBody, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<DocumentDto,Exception>.Success(documentDto));
+            .Setup(e => e.CreateDocumentAsync(station, commandBody, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<Document,Exception>.Success(document));
 
         documentEngineMock
-            .Setup(e => e.UpdateDocumentAsync(documentDto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<DocumentKey,Exception>.Success(documentKey));
+            .Setup(e => e.ComputeAsync(document, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ComputeSession,Exception>.Success(computeSession));
 
         var handler = new StationCreateDocumentHandler(
             stationsRepositoryMock.Object,
@@ -53,6 +54,6 @@ public class StationCreateDocumentHandlerTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Equal(result.Value, documentKey);
+        Assert.Equal(result.Value.Id, computeSession.Document.Id.Value);
     }
 }

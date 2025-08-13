@@ -18,7 +18,8 @@ public class StationCreateDocumentHandler(
 
         return await stationsRepository.GetStationAsync(command.StationId, cancellationToken)
             .BindAsync(e => documentEngine.CreateDocumentAsync(e, command.Body, cancellationToken))
-            .BindAsync(e => documentEngine.UpdateDocumentAsync(e, cancellationToken));
+            .BindAsync(e => documentEngine.ComputeAsync(e, cancellationToken))
+            .MapAsync(e => new DocumentKey(e.Document.Id.Value));
         ;
     }
 

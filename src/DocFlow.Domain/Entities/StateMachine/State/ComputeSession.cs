@@ -2,13 +2,13 @@
 
 namespace DocFlow.Domain.Entities.StateMachine.State;
 
-public class InPlaceSession(
+public class ComputeSession(
     RunSessionId id, 
     DateTime generatedAt, 
-    DocumentId ambientStateId,
+    Document document,
     AtBy created, 
     RunDirection direction) 
-    : RunSession(id, generatedAt, ambientStateId, created, direction)
+    : RunSession(id, generatedAt, document, created, direction)
 {
     
 }

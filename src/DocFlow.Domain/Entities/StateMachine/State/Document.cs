@@ -10,10 +10,9 @@ public class Document
     public required FormularId FormularId { get; init; }
     public required TrackId TrackId { get; set; }
     public required StationId StationId { get; set; }
-    public required RunSessionId LastTraceRecordId { get; set; } 
 
-    public required AtBy Created { get; init; }
-    public required AtBy Updated { get; init; }
+    public required AtBy? Created { get; set; }
+    public required AtBy? Updated { get; set; }
     
     
 }

@@ -4,7 +4,7 @@ root = true
 [*]
 indent_style = space
 vsspell_section_id = 7f0e11db635d476d93d249f5617cb8f6
-vsspell_ignored_words_7f0e11db635d476d93d249f5617cb8f6 = Formular|Formulars|Dto
+vsspell_ignored_words_7f0e11db635d476d93d249f5617cb8f6 = Dto|Formular|Formulars|Json
 
 # Xml files
 [*.xml]

@@ -7,7 +7,7 @@ public abstract class RunSession
     (
     RunSessionId id,
     DateTime generatedAt,
-    DocumentId ambientStateId,
+    Document document,
     AtBy created,
     RunDirection direction)
 {
@@ -21,7 +21,8 @@ public abstract class RunSession
     /// </summary>
     public required DateTime GeneratedAt { get; init; } = generatedAt;
 
-    public required DocumentId AmbientStateId { get; init; } = ambientStateId;
+    public required Document Document { get; init; } = document;
+
     public required AtBy Created { get; init; } = created;
 
     public required RunDirection Direction { get; init; } = direction;

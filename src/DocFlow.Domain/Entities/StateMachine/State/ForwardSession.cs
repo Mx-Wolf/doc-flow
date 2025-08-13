@@ -6,12 +6,12 @@ namespace DocFlow.Domain.Entities.StateMachine.State;
 public class ForwardSession(
     RunSessionId id, 
     DateTime generatedAt, 
-    DocumentId ambientStateId, 
+    Document document, 
     AtBy created, 
     RunDirection direction,
     StationId sourceStationId, 
     StationId targetStationId, 
-    ChannelId channelId) : RunSession(id, generatedAt, ambientStateId, created, direction)
+    ChannelId channelId) : RunSession(id, generatedAt, document, created, direction)
 {
     public required StationId SourceStationId { get; init; } = sourceStationId;
     public required StationId TargetStationId { get; init; } = targetStationId;
