@@ -17,7 +17,9 @@ public class DocumentEngine(
     {
         try
         {
-            return await factory.CreateFromJson(startupStation, body, cancellationToken);
+            var document = await factory.CreateFromJson(startupStation, body, cancellationToken);
+            //TODO: add to repository
+            return document;
         }
         catch (Exception ex)
         {
