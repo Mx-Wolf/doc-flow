@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Nodes;
 
 using DocFlow.Application.Persistence.Engine;
 using DocFlow.Domain.Entities.StateMachine.Flow;
@@ -23,13 +22,13 @@ public class DocumentFactoryTests
     private readonly Fixture _fixture = new();
 
 
-    private readonly ISequenceSource sequenceSource = new DummySequenceSource();
+    private readonly ISequenceSource _sequenceSource = new DummySequenceSource();
     [Fact]
     public async Task CreateFromJson_ShouldCreateTestDocumentWithCorrectData()
     {
         // Arrange
 
-        var factory = new DocumentFactory(sequenceSource);
+        var factory = new DocumentFactory(_sequenceSource);
         var typeOfData = typeof(TestData);
         var station = CreateStation(typeOfData);
         var testName = "TestName";
@@ -65,7 +64,7 @@ public class DocumentFactoryTests
     {
         // Arrange
 
-        var factory = new DocumentFactory(sequenceSource);
+        var factory = new DocumentFactory(_sequenceSource);
         var station = CreateStation(typeof(TestData));
         var invalidJson = JsonSerializer.SerializeToNode(new { Invalid = "Field" })!.AsObject();
 

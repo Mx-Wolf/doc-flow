@@ -1,30 +1,22 @@
-﻿using System.Text.Json.Nodes;
-
-using DocFlow.Domain.Entities.StateMachine.Flow;
+﻿using DocFlow.Application.Persistence.GenericRepository;
 using DocFlow.Domain.Entities.StateMachine.State;
 using DocFlow.Domain.Values;
 
 namespace DocFlow.Application.Persistence.Engine;
 public class DocumentEngine(
-    IDocumentFactory factory) : IDocumentEngine
+    IRunSessionFactory sessionFactory,
+    IRepository<RunSession, RunSessionId> sessions,
+    IActionLoop actionLoop,
+    IUnitOfWork unitOfWork) : IDocumentEngine
 {
-    public Task<Result<ComputeSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken)
+    public async Task<Result<RunSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
 
-    public async Task<Result<Document, Exception>> CreateDocumentAsync(Station startupStation, JsonObject body, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var document = await factory.CreateFromJson(startupStation, body, cancellationToken);
-            //TODO: add to repository
-            return document;
-        }
-        catch (Exception ex)
-        {
-            return Result<Document, Exception>.Failure(ex);
-        }
+        return await sessionFactory.Create(document, cancellationToken)
+            .BindAsync(sessions.Add)
+            .BindAsync(e => actionLoop.RunActions(e, cancellationToken))
+            .BindAsync(e => unitOfWork.SaveChangesAsync(e, cancellationToken));
 
     }
+    
 }
