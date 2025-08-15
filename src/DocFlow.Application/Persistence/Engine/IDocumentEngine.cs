@@ -10,10 +10,3 @@ public interface IDocumentEngine
         Document document,
         CancellationToken cancellationToken);
 }
-
-public interface IActionLoop
-{
-    Task<Result<RunSession, Exception>> RunActions(
-        RunSession runSession,
-        CancellationToken cancellationToken);
-}
