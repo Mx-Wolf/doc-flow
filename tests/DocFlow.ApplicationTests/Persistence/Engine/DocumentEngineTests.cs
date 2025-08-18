@@ -35,9 +35,10 @@ public class DocumentEngineTests
             Id = _fixture.Create<DocumentId>(),
             FormularId = _fixture.Create<FormularId>(),
             TrackId = _fixture.Create<TrackId>(),
-            StationId = _fixture.Create<StationId>(),
+            Station = _fixture.Create<Station>(),
             Created = new AtBy { At = DateTime.UtcNow, By = "user" },
-            Updated = null
+            Updated = null,
+            LastKnownRunSessionId = null,
         };
         var computeSession = _fixture.Create<ComputeSession>();
         var runSession = computeSession as RunSession;
@@ -76,9 +77,10 @@ public class DocumentEngineTests
             Id = _fixture.Create<DocumentId>(),
             FormularId = _fixture.Create<FormularId>(),
             TrackId = _fixture.Create<TrackId>(),
-            StationId = _fixture.Create<StationId>(),
+            Station = _fixture.Create<Station>(),
             Created = new AtBy { At = DateTime.UtcNow, By = "user" },
-            Updated = null
+            Updated = null,
+            LastKnownRunSessionId = null,
         };
         var cancellationToken = CancellationToken.None;
         var exception = new Exception("Factory failed");
@@ -104,9 +106,10 @@ public class DocumentEngineTests
             Id = _fixture.Create<DocumentId>(),
             FormularId = _fixture.Create<FormularId>(),
             TrackId = _fixture.Create<TrackId>(),
-            StationId = _fixture.Create<StationId>(),
+            Station = _fixture.Create<Station>(),
             Created = new AtBy { At = DateTime.UtcNow, By = "user" },
-            Updated = null
+            Updated = null,
+            LastKnownRunSessionId = null
         };
         var computeSession = _fixture.Create<ComputeSession>();
         var cancellationToken = CancellationToken.None;
@@ -137,9 +140,10 @@ public class DocumentEngineTests
             Id = _fixture.Create<DocumentId>(),
             FormularId = _fixture.Create<FormularId>(),
             TrackId = _fixture.Create<TrackId>(),
-            StationId = _fixture.Create<StationId>(),
+            Station = _fixture.Create<Station>(),
             Created = new AtBy { At = DateTime.UtcNow, By = "user" },
-            Updated = null
+            Updated = null,
+            LastKnownRunSessionId = null
         };
         var computeSession = _fixture.Create<ComputeSession>();
         var runSession = computeSession as RunSession;
@@ -175,9 +179,10 @@ public class DocumentEngineTests
             Id = _fixture.Create<DocumentId>(),
             FormularId = _fixture.Create<FormularId>(),
             TrackId = _fixture.Create<TrackId>(),
-            StationId = _fixture.Create<StationId>(),
+            Station = _fixture.Create<Station>(),
             Created = new AtBy { At = DateTime.UtcNow, By = "user" },
-            Updated = null
+            Updated = null,
+            LastKnownRunSessionId = null
         };
         var computeSession = _fixture.Create<ComputeSession>();
         var runSession = computeSession as RunSession;

@@ -9,4 +9,12 @@ public interface IDocumentEngine
     Task<Result<RunSession, Exception>> ComputeAsync(
         Document document,
         CancellationToken cancellationToken);
+
+    Task<Result<RunSession,Exception>> ForwardAsync(
+        Document document,
+        CancellationToken cancellationToken);
+
+    Task<Result<RunSession, Exception>> RecallAsync(
+        Document document,
+        CancellationToken cancellationToken);
 }

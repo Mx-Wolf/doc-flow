@@ -17,7 +17,7 @@ public class DocumentFactory(
         ?? throw new InvalidOperationException("Document.FormularId property not found.");
     private static readonly PropertyInfo TrackProp = typeof(Document).GetProperty(nameof(Document.TrackId)) 
         ?? throw new InvalidOperationException("Document.TrackId property not found.");
-    private static readonly PropertyInfo StationProp = typeof(Document).GetProperty(nameof(Document.StationId)) 
+    private static readonly PropertyInfo StationProp = typeof(Document).GetProperty(nameof(Document.Station)) 
         ?? throw new InvalidOperationException("Document.StationId property not found.");
 
     public async Task<Result<Document,Exception>> CreateFromJson(Station station, JsonObject rowData, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ public class DocumentFactory(
         IdProp.SetValue(instance, id);
         FormularProp.SetValue(instance, station.Track.Formular.Id);
         TrackProp.SetValue(instance, station.Track.Id);
-        StationProp.SetValue(instance, station.Id);
+        StationProp.SetValue(instance, station);
 
         dataProp.SetValue(instance, tData);
 

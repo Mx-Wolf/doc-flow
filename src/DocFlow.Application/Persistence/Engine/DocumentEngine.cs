@@ -12,11 +12,39 @@ public class DocumentEngine(
     public async Task<Result<RunSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken)
     {
 
-        return await sessionFactory.Create(document, cancellationToken)
-            .BindAsync(sessions.Add)
-            .BindAsync(e => actionLoop.RunActions(e, cancellationToken))
-            .BindAsync(e => unitOfWork.SaveChangesAsync(e, cancellationToken));
+        return await Activate(
+            document,
+            e => actionLoop.RunActions(e, cancellationToken), 
+            cancellationToken);
 
     }
-    
+
+
+    public async Task<Result<RunSession, Exception>> ForwardAsync(Document document, CancellationToken cancellationToken)
+    {
+        // TODO: Implement ForwardAsync logic
+        return await Activate(
+            document,
+            e=>Task.FromResult(Result<RunSession,Exception>.Failure(new NotImplementedException())),
+            cancellationToken);
+    }
+
+    public async Task<Result<RunSession, Exception>> RecallAsync(Document document, CancellationToken cancellationToken)
+    {
+        //TODO: Implement RecallAsync logic
+        return await Activate(
+             document,
+             e => Task.FromResult(Result<RunSession, Exception>.Failure(new NotImplementedException())),
+             cancellationToken);
+    }
+    private async Task<Result<RunSession, Exception>> Activate(
+        Document document, 
+        Func<RunSession, Task<Result<RunSession, Exception>>> runActionsCallback, 
+        CancellationToken cancellationToken)
+    {
+        return await sessionFactory.Create(document, cancellationToken)
+            .BindAsync(sessions.Add)
+            .BindAsync(runActionsCallback)
+            .BindAsync(e => unitOfWork.SaveChangesAsync(e, cancellationToken));
+    }
 }
