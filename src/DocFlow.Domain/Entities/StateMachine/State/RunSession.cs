@@ -3,6 +3,7 @@
 namespace DocFlow.Domain.Entities.StateMachine.State;
 [StronglyTypedId(Template.Guid)]
 public readonly partial struct RunSessionId { }
+
 public abstract class RunSession
     (
     RunSessionId id,
@@ -26,5 +27,6 @@ public abstract class RunSession
     public required AtBy Created { get; init; } = created;
 
     public required RunDirection Direction { get; init; } = direction;
+
 
 }
