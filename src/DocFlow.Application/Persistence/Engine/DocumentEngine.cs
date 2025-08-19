@@ -4,16 +4,6 @@ using DocFlow.Domain.Entities.StateMachine.State;
 using DocFlow.Domain.Values;
 
 namespace DocFlow.Application.Persistence.Engine;
-public interface IDocumentRunner 
-{
-    Task<Result<RunSession, Exception>> RunActions(CancellationToken cancellationToken);
-}
-public interface IDocumentRunnerFactory
-{
-    IDocumentRunner BeginComputeSession(Document document);
-    IDocumentRunner BeginFowrardSession(Document document, Channel channel);
-    IDocumentRunner BeginRecallSession(ForwardSession forwardSession);
-}
 public class DocumentEngine(
     IDocumentRunnerFactory documentRunnerFactory,
     IRepository<RunSession, RunSessionId> sessions,
@@ -22,25 +12,30 @@ public class DocumentEngine(
     public async Task<Result<RunSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken)
     {
 
-        var runner = documentRunnerFactory.BeginComputeSession(document);
-        return await runner.RunActions(cancellationToken)
-            .BindAsync(e=>sessions.Add(e))
-            .BindAsync(e=>unitOfWork.SaveChangesAsync(e,cancellationToken));
-
-
+        return await RunAndPersistSessionAsync(
+            documentRunnerFactory.BeginComputeSession(document),
+            cancellationToken);
 
     }
 
 
     public async Task<Result<RunSession, Exception>> ForwardAsync(Document document, Channel channel, CancellationToken cancellationToken)
     {
-        var runner = documentRunnerFactory.BeginFowrardSession(document, channel);
-        return await runner.RunActions(cancellationToken);
+        return await RunAndPersistSessionAsync(
+            documentRunnerFactory.BeginFowrardSession(document, channel), 
+            cancellationToken);
     }
 
     public async Task<Result<RunSession, Exception>> RecallAsync(ForwardSession forwardSession, CancellationToken cancellationToken)
     {
-        var runner = documentRunnerFactory.BeginRecallSession(forwardSession);
-        return await runner.RunActions(cancellationToken);
+        return await RunAndPersistSessionAsync(
+            documentRunnerFactory.BeginRecallSession(forwardSession),
+            cancellationToken);
+    }
+    private async Task<Result<RunSession, Exception>> RunAndPersistSessionAsync(IDocumentRunner runner, CancellationToken cancellationToken)
+    {
+        return await runner.RunActions(cancellationToken)
+            .BindAsync(sessions.Add)
+            .BindAsync(e => unitOfWork.SaveChangesAsync(e, cancellationToken));
     }
 }
