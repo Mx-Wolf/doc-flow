@@ -2,5 +2,6 @@
 
 public interface ISequenceSource
 {
-       Task<int> GetNextSequenceAsync(CancellationToken cancellationToken);
+    Task<int> GetNextSequenceAsync(CancellationToken cancellationToken);
+    Task<Guid> GetNextGuidAsync(CancellationToken cancellationToken);
 }

@@ -16,6 +16,12 @@ public class DocumentFactoryTests
     private class DummySequenceSource : ISequenceSource
     {
         private int _current = 1;
+
+        public Task<Guid> GetNextGuidAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(Guid.CreateVersion7());
+        }
+
         public Task<int> GetNextSequenceAsync(CancellationToken cancellationToken) => Task.FromResult(_current++);
     }
 

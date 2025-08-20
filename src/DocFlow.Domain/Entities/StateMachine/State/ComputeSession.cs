@@ -6,9 +6,8 @@ public class ComputeSession(
     RunSessionId id, 
     DateTime generatedAt, 
     Document document,
-    AtBy created, 
-    RunDirection direction) 
-    : RunSession(id, generatedAt, document, created, direction)
+    AtBy created) 
+    : RunSession(id, generatedAt, document, created, RunDirection.Compute)
 {
     
 }

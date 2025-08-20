@@ -15,18 +15,18 @@ public abstract class RunSession
     /// <summary>
     /// client side generated
     /// </summary>
-    public required RunSessionId Id { get; init; } = id;
+    public RunSessionId Id { get; init; } = id;
 
     /// <summary>
     /// UTC time when the trace record was generated at the source or at the client side.
     /// </summary>
-    public required DateTime GeneratedAt { get; init; } = generatedAt;
+    public DateTime GeneratedAt { get; init; } = generatedAt;
 
-    public required Document Document { get; init; } = document;
+    public Document Document { get; init; } = document;
 
-    public required AtBy Created { get; init; } = created;
+    public AtBy Created { get; init; } = created;
 
-    public required RunDirection Direction { get; init; } = direction;
+    public RunDirection Direction { get; init; } = direction;
 
 
 }

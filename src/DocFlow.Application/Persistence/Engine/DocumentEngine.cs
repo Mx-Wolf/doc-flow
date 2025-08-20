@@ -22,7 +22,7 @@ public class DocumentEngine(
     public async Task<Result<RunSession, Exception>> ForwardAsync(Document document, Channel channel, CancellationToken cancellationToken)
     {
         return await RunAndPersistSessionAsync(
-            documentRunnerFactory.BeginFowrardSession(document, channel), 
+            documentRunnerFactory.BeginForwardSession(document, channel), 
             cancellationToken);
     }
 

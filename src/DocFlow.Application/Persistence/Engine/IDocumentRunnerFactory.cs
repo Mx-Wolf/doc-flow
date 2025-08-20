@@ -6,6 +6,6 @@ namespace DocFlow.Application.Persistence.Engine;
 public interface IDocumentRunnerFactory
 {
     IDocumentRunner BeginComputeSession(Document document);
-    IDocumentRunner BeginFowrardSession(Document document, Channel channel);
+    IDocumentRunner BeginForwardSession(Document document, Channel channel);
     IDocumentRunner BeginRecallSession(ForwardSession forwardSession);
 }

@@ -8,12 +8,11 @@ public class ForwardSession(
     DateTime generatedAt, 
     Document document, 
     AtBy created, 
-    RunDirection direction,
     StationId sourceStationId, 
     StationId targetStationId, 
-    ChannelId channelId) : RunSession(id, generatedAt, document, created, direction)
+    ChannelId channelId) : RunSession(id, generatedAt, document, created, RunDirection.Forward)
 {
-    public required StationId SourceStationId { get; init; } = sourceStationId;
-    public required StationId TargetStationId { get; init; } = targetStationId;
-    public required ChannelId ChannelId { get; init; } = channelId;
+    public StationId SourceStationId { get; init; } = sourceStationId;
+    public StationId TargetStationId { get; init; } = targetStationId;
+    public ChannelId ChannelId { get; init; } = channelId;
 }
