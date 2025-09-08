@@ -9,33 +9,20 @@ public class DocumentEngine(
     IRepository<RunSession, RunSessionId> sessions,
     IUnitOfWork unitOfWork) : IDocumentEngine
 {
-    public async Task<Result<RunSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken)
-    {
-
-        return await RunAndPersistSessionAsync(
-            documentRunnerFactory.BeginComputeSession(document),
-            cancellationToken);
-
-    }
+    public async Task<Result<RunSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken) 
+        => await documentRunnerFactory.BeginComputeSession(document)
+            .BindAsync(p => RunAndPersistSessionAsync(p, cancellationToken));
 
 
     public async Task<Result<RunSession, Exception>> ForwardAsync(Document document, Channel channel, CancellationToken cancellationToken)
-    {
-        return await RunAndPersistSessionAsync(
-            documentRunnerFactory.BeginForwardSession(document, channel), 
-            cancellationToken);
-    }
+        => await documentRunnerFactory.BeginForwardSession(document, channel)
+            .BindAsync(s => RunAndPersistSessionAsync(s, cancellationToken));
 
     public async Task<Result<RunSession, Exception>> RecallAsync(ForwardSession forwardSession, CancellationToken cancellationToken)
-    {
-        return await RunAndPersistSessionAsync(
-            documentRunnerFactory.BeginRecallSession(forwardSession),
-            cancellationToken);
-    }
-    private async Task<Result<RunSession, Exception>> RunAndPersistSessionAsync(IDocumentRunner runner, CancellationToken cancellationToken)
-    {
-        return await runner.RunActions(cancellationToken)
+        => await documentRunnerFactory.BeginRecallSession(forwardSession)
+            .BindAsync(r => RunAndPersistSessionAsync(r, cancellationToken));
+    private async Task<Result<RunSession, Exception>> RunAndPersistSessionAsync(IDocumentRunner runner, CancellationToken cancellationToken) 
+        => await runner.RunActions(cancellationToken)
             .BindAsync(sessions.Add)
             .BindAsync(e => unitOfWork.SaveChangesAsync(e, cancellationToken));
-    }
 }

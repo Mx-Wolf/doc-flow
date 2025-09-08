@@ -22,17 +22,17 @@ Equivalent to a "template." Represents the predefined structure, similar to a pr
 
 ## **Handoff**
 
-Equivalent to a "transition." Refers to the act of transferring a **Document** from one **Unit** to another, signifying the movement of responsibility. A **Handoff** is governed by the rules defined in the **Unit Map** and progresses the **Document** through its lifecycle.
+Equivalent to a "transition." Refers to the act of transferring a **Document** from one **Station** to another, signifying the movement of responsibility. A **Handoff** is governed by the rules defined in the **Unit Map** and progresses the **Document** through its lifecycle.
 
 ---
 
-## **Unit**
+## **Station**
 
-Equivalent to a "task." Refers to a discrete stage in the document life cycle, representing specific work performed by a professional or system automation. A **Unit** is a cohesive work segment with a defined purpose. It must be fully completed or revisited entirely if retrying is necessary. Each **Unit** operates independently within the framework of the **Unit Map.**
+Equivalent to a "task." Refers to a discrete stage in the document life cycle, representing specific work performed by a professional or system automation. A **Unit** is a cohesive work segment with a defined purpose. It must be fully completed or revisited entirely if retrying is necessary. Each **Station** operates independently within the framework of the **Unit Map.**
 
 ---
 
-## **Unit Steps**
+## **Station Steps**
 
 Equivalent to the "steps" or "actions" within a task. These are predefined granular operations that collectively fulfill the purpose of a **Unit.** **Unit Steps** must be executed in sequence to complete the work for that stage.
 

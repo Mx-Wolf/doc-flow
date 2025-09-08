@@ -1,3 +1,5 @@
-﻿namespace DocFlow.Application.Engine.Documents.Commands;
+﻿using DocFlow.Domain.Entities.StateMachine.State;
 
-public record CreateDocumentResult(int Id);
+namespace DocFlow.Application.Engine.Documents.Commands;
+
+public record CreateDocumentResult(RunSessionId RunSessionId);

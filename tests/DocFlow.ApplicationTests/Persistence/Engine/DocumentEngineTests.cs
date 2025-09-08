@@ -48,7 +48,7 @@ public class DocumentEngineTests
         _unitOfWorkMock.Setup(u => u.SaveChangesAsync(cancellationToken))
             .ReturnsAsync(Result<int, Exception>.Success(1));
         _documentRunnerFactoryMock.Setup(f => f.BeginComputeSession(document))
-            .Returns(_documentRunnerMock.Object);
+            .Returns(Result<IDocumentRunner, Exception>.Success(_documentRunnerMock.Object));
         _documentRunnerMock.Setup(r => r.RunActions(cancellationToken))
             .ReturnsAsync(Result<RunSession, Exception>.Success(runSession));
         // Act
@@ -81,7 +81,7 @@ public class DocumentEngineTests
 
 
         _documentRunnerFactoryMock.Setup(f => f.BeginComputeSession(document))
-            .Returns(_documentRunnerMock.Object);
+            .Returns(Result<IDocumentRunner, Exception>.Success(_documentRunnerMock.Object));
         _documentRunnerMock.Setup(r => r.RunActions(cancellationToken))
             .ReturnsAsync(Result<RunSession, Exception>.Failure(exception));
         // Act

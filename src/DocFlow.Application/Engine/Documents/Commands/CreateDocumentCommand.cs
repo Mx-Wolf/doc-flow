@@ -1,5 +1,10 @@
-﻿namespace DocFlow.Application.Engine.Documents.Commands;
+﻿using System.Text.Json.Nodes;
+
+using DocFlow.Domain.Entities.StateMachine.Flow;
+using DocFlow.Domain.Entities.StateMachine.State;
+
+namespace DocFlow.Application.Engine.Documents.Commands;
 public record CreateDocumentCommand(
-    int FormularId, 
-    int UnitMapId, 
-    IReadOnlyDictionary<string,object> Properties);
+    DocumentId DocumentId,
+    StationId StationId,
+    JsonObject Properties);
