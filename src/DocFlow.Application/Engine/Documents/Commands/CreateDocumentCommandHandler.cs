@@ -1,22 +1,24 @@
 ﻿using DocFlow.Application.Persistence.Engine;
 using DocFlow.Application.Persistence.GenericRepository;
 using DocFlow.Domain.Entities.StateMachine.Flow;
+using DocFlow.Domain.Entities.StateMachine.State;
 using DocFlow.Domain.Values;
 
 namespace DocFlow.Application.Engine.Documents.Commands;
 
 public class CreateDocumentCommandHandler(
-    IDocumentRunnerFactory documentRunnerFactory,
     IDocumentFactory documentFactory,
-    IRepository<Station, StationId> stationsRepository
+    IRepository<Station, StationId> stationsRepository,
+    IRepository<Document, DocumentId> documentRepository,
+    IDocumentEngine engine
     ) : CommandHandler<CreateDocumentCommand, CreateDocumentResult>
 {
-    public override async Task<Result<CreateDocumentResult, Exception>> HandleAsync(
+    public override Task<Result<CreateDocumentResult, Exception>> HandleAsync(
         CreateDocumentCommand command,
-        CancellationToken cancellationToken) 
-        => await (await stationsRepository.FindAsync(command.StationId, cancellationToken))
-            .BindAsync(station => documentFactory.CreateFromJson(station, command.Properties, cancellationToken))
-            .BindAsync(documentRunnerFactory.BeginComputeSession)
-            .BindAsync(compute => compute.RunActions(cancellationToken))
-            .MapAsync(session => new CreateDocumentResult(session.Id));
+        CancellationToken cancellationToken)
+        =>  stationsRepository.FindAsync(command.StationId, cancellationToken)
+        .BindAsync(station => documentFactory.CreateFromJson(station, command.Properties, cancellationToken))
+        .BindAsync(documentRepository.Add)
+        .BindAsync(document => engine.ComputeAsync(document, cancellationToken))
+        .MapAsync(session => new CreateDocumentResult(session.Id));
 }
