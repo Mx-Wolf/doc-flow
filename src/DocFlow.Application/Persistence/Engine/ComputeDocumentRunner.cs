@@ -24,13 +24,13 @@ internal class ComputeDocumentRunner(
 
     private async Task<ComputeSession> PrepareSession(CancellationToken cancellationToken)
     {
-        var runSessionId = new RunSessionId(await sequenceSource.GetNextGuidAsync(cancellationToken));
         var runSession = new ComputeSession(
-            runSessionId,
+            await sequenceSource.GetRunSessionId(cancellationToken),
             systemTime.UtcNow,
             document,
             await actionUser.GetUserStamp(cancellationToken)
             );
         return runSession;
     }
+
 }

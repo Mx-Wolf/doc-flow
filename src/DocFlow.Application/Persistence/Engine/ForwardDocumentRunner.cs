@@ -25,11 +25,10 @@ internal class ForwardDocumentRunner(
 
     private async Task<RunSession> PrepareSession(CancellationToken cancellationToken)
     {
-        var runSessionId = new RunSessionId(await sequenceSource.GetNextGuidAsync(cancellationToken));
         document.Station = channel.TargetStation;
 
-        return new ForwardSession(
-            runSessionId,
+        var session = new ForwardSession(
+            await sequenceSource.GetRunSessionId(cancellationToken),
             systemTime.UtcNow,
             document,
             await actionUser.GetUserStamp(cancellationToken),
@@ -37,5 +36,7 @@ internal class ForwardDocumentRunner(
             channel.TargetStation.Id,
             channel.Id
         );
+
+        return session;
     }
 }
