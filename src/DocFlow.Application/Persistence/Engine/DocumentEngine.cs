@@ -6,8 +6,7 @@ using DocFlow.Domain.Values;
 namespace DocFlow.Application.Persistence.Engine;
 public class DocumentEngine(
     IDocumentRunnerFactory documentRunnerFactory,
-    IRepository<RunSession, RunSessionId> sessions,
-    IUnitOfWork unitOfWork) : IDocumentEngine
+    IRepository<RunSession, RunSessionId> sessions) : IDocumentEngine
 {
     public async Task<Result<RunSession, Exception>> ComputeAsync(Document document, CancellationToken cancellationToken) 
         => await documentRunnerFactory.BeginComputeSession(document)
@@ -23,6 +22,5 @@ public class DocumentEngine(
             .BindAsync(r => RunAndPersistSessionAsync(r, cancellationToken));
     private async Task<Result<RunSession, Exception>> RunAndPersistSessionAsync(IDocumentRunner runner, CancellationToken cancellationToken) 
         => await runner.RunActions(cancellationToken)
-            .BindAsync(sessions.Add)
-            .BindAsync(e => unitOfWork.SaveChangesAsync(e, cancellationToken));
+            .BindAsync(sessions.Add);
 }

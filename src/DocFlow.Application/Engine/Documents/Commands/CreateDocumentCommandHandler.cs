@@ -10,7 +10,8 @@ public class CreateDocumentCommandHandler(
     IDocumentFactory documentFactory,
     IRepository<Station, StationId> stationsRepository,
     IRepository<Document, DocumentId> documentRepository,
-    IDocumentEngine engine
+    IDocumentEngine engine,
+    IUnitOfWork unitOfWork
     ) : CommandHandler<CreateDocumentCommand, CreateDocumentResult>
 {
     public override Task<Result<CreateDocumentResult, Exception>> HandleAsync(
@@ -20,5 +21,6 @@ public class CreateDocumentCommandHandler(
         .BindAsync(station => documentFactory.CreateFromJson(station, command.Properties, cancellationToken))
         .BindAsync(documentRepository.Add)
         .BindAsync(document => engine.ComputeAsync(document, cancellationToken))
-        .MapAsync(session => new CreateDocumentResult(session.Id));
+        .MapAsync(session => new CreateDocumentResult(session.Id))
+        .BindAsync(result=> unitOfWork.SaveChangesAsync(result, cancellationToken));
 }
