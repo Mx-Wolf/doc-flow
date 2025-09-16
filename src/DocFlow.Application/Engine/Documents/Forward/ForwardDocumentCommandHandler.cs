@@ -10,6 +10,6 @@ public class ForwardDocumentCommandHandler (
     {
         var x = documents.FindAsync(command.DocumentId, cancellationToken);
             
-        throw new NotImplementedException();
+        throw new NotImplementedException(string.Format($"To do: {x}"));
     }
 }

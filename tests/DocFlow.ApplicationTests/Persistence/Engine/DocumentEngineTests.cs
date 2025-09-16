@@ -11,7 +11,7 @@ public class DocumentEngineTests
     private readonly Mock<IDocumentRunnerFactory> _documentRunnerFactoryMock = new();
     private readonly Mock<IDocumentRunner> _documentRunnerMock = new();
     private readonly Mock<IRepository<RunSession, RunSessionId>> _repositoryMock = new();
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+
 
     private readonly DocumentEngine _engine;
 
@@ -19,9 +19,8 @@ public class DocumentEngineTests
     {
         _engine = new DocumentEngine(
             _documentRunnerFactoryMock.Object,
-            _repositoryMock.Object,
-            _unitOfWorkMock.Object
-        );
+            _repositoryMock.Object
+            );
         _fixture.Register<RunSession>(() => _fixture.Create<ComputeSession>());
     }
 
@@ -44,9 +43,8 @@ public class DocumentEngineTests
         var cancellationToken = CancellationToken.None;
 
         _repositoryMock.Setup(r => r.Add(It.IsAny<RunSession>()))
-            .Returns(Result<RunSession,Exception>.Success( runSession));
-        _unitOfWorkMock.Setup(u => u.SaveChangesAsync(cancellationToken))
-            .ReturnsAsync(Result<int, Exception>.Success(1));
+            .Returns(Result<RunSession, Exception>.Success(runSession));
+        
         _documentRunnerFactoryMock.Setup(f => f.BeginComputeSession(document))
             .Returns(Result<IDocumentRunner, Exception>.Success(_documentRunnerMock.Object));
         _documentRunnerMock.Setup(r => r.RunActions(cancellationToken))
@@ -59,7 +57,7 @@ public class DocumentEngineTests
         Assert.Equal(runSession, result.Value);
     }
 
-    
+
     [Fact]
     public async Task ComputeAsync_ReturnsFailure_WhenActionLoopFails()
     {
@@ -93,5 +91,5 @@ public class DocumentEngineTests
         Assert.Equal(exception, result.Error);
     }
 
-    
+
 }

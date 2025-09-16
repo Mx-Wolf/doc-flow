@@ -12,9 +12,12 @@ namespace DocFlow.ApplicationTests.Engine.Documents.Commands;
 public class CreateDocumentCommandHandlerTests
 {
     private readonly Fixture _fixture = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     [Fact]
     public async Task HandleAsync_ReturnsCreateDocumentResult_WhenAllDependenciesSucceed()
     {
+        _unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<int, Exception>.Success(1));
         // Arrange
         DocumentId documentId = _fixture.Create<DocumentId>();
         FormularId formularId = _fixture.Create<FormularId>();
@@ -64,7 +67,8 @@ public class CreateDocumentCommandHandlerTests
             documentFactoryMock.Object,
             stationsRepositoryMock.Object,
             documentRepositoryMock.Object,
-            documentEngineMock.Object);
+            documentEngineMock.Object,
+            _unitOfWorkMock.Object);
 
         // Act
         var result = await handler.HandleAsync(command, CancellationToken.None);
