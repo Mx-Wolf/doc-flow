@@ -45,7 +45,12 @@ public class DocumentFactory(
 
     private static PropertyInfo GetDataPropInfo(Type instanceType)
     {
-        return instanceType.GetProperty(nameof(DocumentData<object>.Data)) ?? throw new InvalidOperationException("DocumentData.Data property not found.");
+        
+        return instanceType.GetProperty(nameof(DocumentData<object>.Data),
+            BindingFlags.FlattenHierarchy
+            | BindingFlags.Instance 
+            | BindingFlags.Public
+            | BindingFlags.NonPublic) ?? throw new InvalidOperationException("DocumentData.Data property not found.");
     }
 
     public async Task<Result<Document, Exception>> PatchFromJson(Document document, JsonObject? patch, CancellationToken cancellationToken)
@@ -59,8 +64,9 @@ public class DocumentFactory(
 
     private static Result<Document, Exception> SetDocumentData(Document document, JsonObject patch, PropertyInfo dataProp)
     {
+        var setter = dataProp.GetSetMethod(true);
         var tData = JsonSerializer.Deserialize(patch.ToJsonString(), document.Station.Track.Formular.DocumentData);
-        dataProp.SetValue(document, tData);
+        setter?.Invoke(document, [tData]);
         return Result<Document, Exception>.Success(document);
     }
 

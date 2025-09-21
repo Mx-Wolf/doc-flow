@@ -5,13 +5,11 @@ using DocFlow.Domain.Entities.StateMachine.Flow;
 using DocFlow.Domain.Entities.StateMachine.State;
 
 namespace DocFlow.ApplicationTests.Persistence.Engine;
+    public record TestData(string? Name);
+    
 public class DocumentFactoryTests
 {
-    private record TestData(string? Name);
 
-    private class TestDocument : DocumentData<TestData>
-    {
-    }
 
     private class DummySequenceSource : ISequenceSource
     {
@@ -83,4 +81,93 @@ public class DocumentFactoryTests
         Assert.Null(doc.Data.Name);
     }
 
+    [Fact]
+    public async Task PatchFromJson_ShouldSetData_WhenDataIsNull()
+    {
+        // Arrange
+        var factory = new DocumentFactory(_sequenceSource);
+        var typeOfData = typeof(TestData);
+        var station = CreateStation(typeOfData);
+        var doc = _fixture.Build<DocumentData<TestData>>()
+            .Create();
+        doc.GetType().GetProperty(nameof(Document.Station))!.SetValue(doc, station);
+        var patch = JsonSerializer.SerializeToNode(new { Name = "PatchedName" })!.AsObject();
+
+        // Act
+        var result = await factory.PatchFromJson(doc, patch, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        var patchedDoc = Assert.IsType<DocumentData<TestData>>(result.Value);
+        Assert.NotNull(patchedDoc.Data);
+        Assert.Equal("PatchedName", patchedDoc.Data.Name);
+    }
+
+    [Fact]
+    public async Task PatchFromJson_ShouldPatchData_WhenDataIsNotNull()
+    {
+        // Arrange
+        var factory = new DocumentFactory(_sequenceSource);
+        var typeOfData = typeof(TestData);
+        var station = CreateStation(typeOfData);
+        var doc = _fixture.Build<DocumentData<TestData>>()
+            .Create();
+        doc.GetType().GetProperty(nameof(Document.Station))!.SetValue(doc, station);
+        // Set initial data
+        doc.GetType().GetProperty(nameof(DocumentData<TestData>.Data))!
+        .SetValue(doc, new TestData("InitialName"));
+        var patch = JsonSerializer.SerializeToNode(new { Name = "PatchedName" })!.AsObject();
+
+        // Act
+        var result = await factory.PatchFromJson(doc, patch, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        var patchedDoc = Assert.IsType<DocumentData<TestData>>(result.Value);
+        Assert.NotNull(patchedDoc.Data);
+        Assert.Equal("PatchedName", patchedDoc.Data.Name);
+    }
+
+    [Fact]
+    public async Task PatchFromJson_ShouldSetPropertyToNull_WhenPatchContainsExplicitNull()
+    {
+        // Arrange
+        var factory = new DocumentFactory(_sequenceSource);
+        var typeOfData = typeof(TestData);
+        var station = CreateStation(typeOfData);
+        var doc = _fixture.Build<DocumentData<TestData>>().Create();
+        doc.GetType().GetProperty(nameof(Document.Station))!.SetValue(doc, station);
+        doc.GetType().GetProperty(nameof(DocumentData<TestData>.Data))!
+        .SetValue(doc, new TestData("InitialName"));
+        var patch = JsonSerializer.SerializeToNode(new { Name = (string?)null })!.AsObject();
+
+        // Act
+        var result = await factory.PatchFromJson(doc, patch, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        var patchedDoc = Assert.IsType<DocumentData<TestData>>(result.Value);
+        Assert.NotNull(patchedDoc.Data);
+        Assert.Null(patchedDoc.Data.Name);
+    }
+
+    [Fact]
+    public async Task PatchFromJson_ShouldReturnOriginalDocument_WhenPatchIsNull()
+    {
+        // Arrange
+        var factory = new DocumentFactory(_sequenceSource);
+        var typeOfData = typeof(TestData);
+        var station = CreateStation(typeOfData);
+        var doc = _fixture.Build<DocumentData<TestData>>().Create();
+        doc.GetType().GetProperty(nameof(Document.Station))!.SetValue(doc, station);
+        doc.GetType().GetProperty(nameof(DocumentData<TestData>.Data))!
+        .SetValue(doc, new TestData("InitialName"));
+
+        // Act
+        var result = await factory.PatchFromJson(doc, null, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Same(doc, result.Value);
+    }
 }
