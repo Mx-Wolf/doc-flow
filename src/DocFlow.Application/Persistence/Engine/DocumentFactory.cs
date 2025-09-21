@@ -23,22 +23,70 @@ public class DocumentFactory(
     public async Task<Result<Document,Exception>> CreateFromJson(Station station, JsonObject rowData, CancellationToken cancellationToken)
     {
         // Implementation for creating a Document from JSON data
-        var tData = JsonSerializer.Deserialize(rowData.ToJsonString(), station.Track.Formular.DocumentData);
         var id = new DocumentId(await sequenceSource.GetNextSequenceAsync(cancellationToken));
         var instanceType = OpenDocumentType.MakeGenericType(station.Track.Formular.DocumentData);
-        PropertyInfo dataProp = instanceType.GetProperty(nameof(DocumentData<object>.Data))?? throw new InvalidOperationException("DocumentData.Data property not found.");
-        var instance = Activator.CreateInstance(instanceType);
+        var instance = Activator.CreateInstance(instanceType) as Document ?? throw new InvalidOperationException();
 
         IdProp.SetValue(instance, id);
         FormularProp.SetValue(instance, station.Track.Formular.Id);
         TrackProp.SetValue(instance, station.Track.Id);
         StationProp.SetValue(instance, station);
 
-        dataProp.SetValue(instance, tData);
+        SetDocumentData(
+            instance, 
+            rowData,
+            GetDataPropInfo(instanceType));
 
-        return instance is Document document 
-            ? Result<Document, Exception>.Success(document) 
+        return instance is Document document
+            ? Result<Document, Exception>.Success(document)
             : Result<Document, Exception>.Failure(new InvalidOperationException("Deserialized object is not a Document."));
 
+    }
+
+    private static PropertyInfo GetDataPropInfo(Type instanceType)
+    {
+        return instanceType.GetProperty(nameof(DocumentData<object>.Data)) ?? throw new InvalidOperationException("DocumentData.Data property not found.");
+    }
+
+    public async Task<Result<Document, Exception>> PatchFromJson(Document document, JsonObject? patch, CancellationToken cancellationToken)
+    {
+        if (patch == null) return await Task.FromResult(Result<Document, Exception>.Success(document));
+        PropertyInfo dataProp = GetDataPropInfo(document.GetType());
+        var type = document.Station.Track.Formular.DocumentData;
+        var target = dataProp.GetValue(document, null);
+        return target != null ? PatchDocumentData(document, patch, type, target) : SetDocumentData(document, patch, dataProp);
+    }
+
+    private static Result<Document, Exception> SetDocumentData(Document document, JsonObject patch, PropertyInfo dataProp)
+    {
+        var tData = JsonSerializer.Deserialize(patch.ToJsonString(), document.Station.Track.Formular.DocumentData);
+        dataProp.SetValue(document, tData);
+        return Result<Document, Exception>.Success(document);
+    }
+
+    private static Result<Document, Exception> PatchDocumentData(Document document, JsonObject patch, Type type, object target)
+    {
+        foreach (var kvp in patch)
+        {
+            var prop = type.GetProperty(kvp.Key, BindingFlags.Public | BindingFlags.Instance);
+            if (prop == null || !prop.CanWrite) continue;
+
+            var jsonValue = kvp.Value;
+
+            // Explicit null: set property to null if it's a reference type or nullable
+            if (jsonValue != null && jsonValue.GetValueKind() == JsonValueKind.Null)
+            {
+                if (!prop.PropertyType.IsValueType || Nullable.GetUnderlyingType(prop.PropertyType) != null)
+                {
+                    prop.SetValue(target, null);
+                }
+                continue;
+            }
+
+            // Non-null: deserialize and assign
+            var value = jsonValue.Deserialize(prop.PropertyType);
+            prop.SetValue(target, value);
+        }
+        return Result<Document, Exception>.Success(document);
     }
 }

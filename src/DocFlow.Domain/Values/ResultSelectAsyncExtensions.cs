@@ -3,7 +3,7 @@
 public static class ResultSelectAsyncExtensions
 {
     // Async: Maps a successful Task<Result<T>> to Task<Result<U>>
-    public static async Task<Result<U,E>> SelectAsync<T,E, U>(
+    public static async Task<Result<U,E>> Select<T,E, U>(
         this Task<Result<T,E>> taskResult,
         Func<T, U> mapFunc)                               // Selector that maps T -> U
     {

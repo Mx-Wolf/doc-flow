@@ -1,6 +1,18 @@
-﻿namespace DocFlow.Domain.Entities.StateMachine.State;
+﻿using DocFlow.Domain.Values;
 
-public class DocumentData<TData>:Document where TData : class
+namespace DocFlow.Domain.Entities.StateMachine.State;
+
+public class DocumentData<TData> : Document where TData : class
 {
-  public required TData Data { get; set; }
+    public TData? Data { get; private set; }
+    public Result<TData, Exception> GetDocumentData() 
+        => Data != null
+        ? Result<TData, Exception>.Success(Data) 
+        : Result<TData, Exception>.Failure(new InvalidDataException());
+    public void SetDateOnce(TData data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        if (Data != null) throw new InvalidOperationException("already initalized");
+        Data = data;
+    }
 }

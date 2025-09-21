@@ -2,4 +2,4 @@
 
 namespace DocFlow.Application.Engine.Documents.Commands;
 
-public record CreateDocumentResult(RunSessionId RunSessionId);
+public record SessionResponse(RunSessionId RunSessionId);

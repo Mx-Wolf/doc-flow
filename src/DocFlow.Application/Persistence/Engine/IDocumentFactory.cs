@@ -9,4 +9,5 @@ namespace DocFlow.Application.Persistence.Engine;
 public interface IDocumentFactory
 {
     Task<Result<Document,Exception>> CreateFromJson(Station station, JsonObject rowData, CancellationToken cancellationToken);
+    Task<Result<Document,Exception>> PatchFromJson(Document document, JsonObject? patch, CancellationToken cancellationToken);
 }
